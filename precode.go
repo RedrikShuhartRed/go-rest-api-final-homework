@@ -80,7 +80,7 @@ func createTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 // getTaskForId возвращает задачу с указанным в запросе пути ID.
-func getTaskForId(w http.ResponseWriter, r *http.Request) {
+func getTaskId(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	TaskId, ok := tasks[id]
@@ -132,7 +132,7 @@ func main() {
 	// ...
 	r.Get("/tasks", getTasks)
 	r.Post("/tasks", createTasks)
-	r.Get("/tasks/{id}", getTaskForId)
+	r.Get("/tasks/{id}", getTaskId)
 	r.Delete("/tasks/{id}", deleteTaskForId)
 
 	if err := http.ListenAndServe(":8080", r); err != nil {
