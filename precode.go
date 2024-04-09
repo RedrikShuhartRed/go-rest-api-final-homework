@@ -79,7 +79,7 @@ func createTasks(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-// getTaskForId возвращает задачу с указанным в запросе пути ID.
+// getTaskId возвращает задачу с указанным в запросе пути ID.
 func getTaskId(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
@@ -90,22 +90,24 @@ func getTaskId(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := json.Marshal(TaskId)
+	//resp, err := json.Marshal(TaskId)
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(&TaskId)
 	if err != nil {
-		log.Printf("Error json.Marshal: %v", err)
+		log.Printf("Error NewEncoder().Encode(): %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	//w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	_, err = w.Write(resp)
+	/*_, err = w.Write(resp)
 	if err != nil {
 		log.Printf("Error w.Write response: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
-	}
+	}*/
 }
 
 // deleteTaskForId удаляет задачу из мапы по её ID.
